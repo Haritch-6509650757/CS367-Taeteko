@@ -9,57 +9,83 @@
         /* ตั้งค่าพื้นฐาน */
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: #f4f4f4;
             color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* แถบเครื่องมือ */
+        .toolbar {
+            background: linear-gradient(to right, #004080, #007BFF);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .toolbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .toolbar a:hover {
+            background-color: #0056b3;
+            color: #e6f0ff;
         }
 
         /* ส่วนหัว */
         h1 {
-            background-color: #004080;
-            color: white;
+            color: #004080;
+            font-size: 36px;
+            font-weight: bold;
             text-align: center;
-            padding: 20px 0;
-            margin: 0;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         /* ปุ่ม */
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
         button {
-            display: block;
-            width: 200px;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: #004080;
+            background: linear-gradient(to right, #007BFF, #0056b3);
             color: white;
             border: none;
-            border-radius: 4px;
+            padding: 10px 20px;
             font-size: 16px;
+            border-radius: 6px;
             cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #003060;
-        }
-
-        /* กล่องแสดงผล */
-        #response {
-            max-width: 400px;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: #e6f0ff;
-            border: 1px solid #004080;
-            border-radius: 4px;
-            color: #004080;
-            text-align: center;
+            background-color: #003d80;
+            transform: scale(1.05);
         }
 
         /* ตาราง */
         table {
-            width: 80%;
+            width: 90%;
             margin: 20px auto;
             border-collapse: collapse;
             background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         th, td {
@@ -80,11 +106,31 @@
         tr:hover {
             background-color: #e6f0ff;
         }
+
+        /* กล่องข้อความ */
+        #response {
+            max-width: 90%;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #e6f0ff;
+            border: 1px solid #004080;
+            border-radius: 6px;
+            color: #004080;
+            text-align: center;
+            display: none;
+        }
     </style>
 </head>
 <body>
+    <div class="toolbar">
+        <a href="indexwarehouse.html">Home</a>
+        <a href="returncar.html">Return Car</a>
+    </div>
+
     <h1>Return Car</h1>
-    <button id="fetchCarsButton">Return All Cars</button>
+    <div class="button-group">
+        <button id="fetchCarsButton">Return All Cars</button>
+    </div>
     <div id="response"></div>
     <table id="carTable" style="display: none;">
         <thead>
@@ -110,11 +156,12 @@
                 const response = await fetch(url);
                 const result = await response.json();
 
-                responseDiv.innerText = ''; // ล้างข้อความเก่า
+                responseDiv.style.display = 'none'; // ซ่อนข้อความเก่า
                 carTableBody.innerHTML = ''; // ล้างข้อมูลในตารางเก่า
 
                 if (!result || result.length === 0) {
                     responseDiv.innerText = 'No cars found.';
+                    responseDiv.style.display = 'block';
                     carTable.style.display = 'none';
                     return;
                 }
@@ -133,6 +180,7 @@
                 });
             } catch (error) {
                 responseDiv.innerText = `Error: ${error.message || 'Unable to fetch car data.'}`;
+                responseDiv.style.display = 'block';
                 carTable.style.display = 'none'; // ซ่อนตารางในกรณีเกิดข้อผิดพลาด
             }
         });
