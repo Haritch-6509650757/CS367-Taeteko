@@ -1,11 +1,5 @@
 package dev.haritch.carrental;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -27,19 +21,10 @@ public class CarStorage {
     //private String rentalEndDate;
     private double price;
 
-    @Column (name = "rentalStartDate")
-    private LocalDate rentalStartDate;
-
-    @Column (name = "rentalEndDate")
-    private LocalDate rentalEndDate;
-
-    private Integer rentalDays;
-
     CarStorage() {}
 
     public CarStorage(String carType, String carBrand, String licensePlate, String carLocation, String carModel, 
-                    String carColor, boolean carInsurance, String carStatus, String milege, LocalDate rentalStartDate
-                    , LocalDate rentalEndDate, double price){
+                    String carColor, boolean carInsurance, String carStatus, String milege, double price){
         this.carType = carType;
         this.carBrand = carBrand;
         this.licensePlate = licensePlate;
@@ -49,8 +34,6 @@ public class CarStorage {
         this.carInsurance = carInsurance;
         this.carStatus = carStatus;
         this.milege = milege;
-        this.rentalStartDate = rentalStartDate;
-        this.rentalEndDate = rentalEndDate;
         this.price = price;
     }
 
@@ -126,29 +109,6 @@ public class CarStorage {
         this.milege = milege;
     }
 
-    public LocalDate getRentalStartDate() {
-        return rentalStartDate;
-    }
-
-    public void setRentalStartDate(LocalDate rentalStartDate) {
-        this.rentalStartDate = rentalStartDate;
-    }
-
-    public LocalDate getRentalEndDate() {
-        return rentalEndDate;
-    }
-
-    public void setRentalEndDate(LocalDate rentalEndDate) {
-        this.rentalEndDate = rentalEndDate;
-    } 
-
-    public void setRentalDays(Integer rentalDays){
-        this.rentalDays = rentalDays;
-        if(rentalStartDate != null && rentalDays != null){
-            this.rentalEndDate = rentalStartDate.plusDays(rentalDays);
-        }
-    }
-
     public double getPrice() {
         return price;
     }
@@ -221,16 +181,6 @@ public class CarStorage {
                 return false;
         } else if (!milege.equals(other.milege))
             return false;
-        if (rentalStartDate == null) {
-            if (other.rentalStartDate != null)
-                return false;
-        } else if (!rentalStartDate.equals(other.rentalStartDate))
-            return false;
-        if (rentalEndDate == null) {
-            if (other.rentalEndDate != null)
-                return false;
-        } else if (!rentalEndDate.equals(other.rentalEndDate))
-            return false;
         if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
             return false;
         return true;
@@ -250,8 +200,6 @@ public class CarStorage {
         result = prime * result + (carInsurance ? 1231 : 1237);
         result = prime * result + ((carStatus == null) ? 0 : carStatus.hashCode());
         result = prime * result + ((milege == null) ? 0 : milege.hashCode());
-        result = prime * result + ((rentalStartDate == null) ? 0 : rentalStartDate.hashCode());
-        result = prime * result + ((rentalEndDate == null) ? 0 : rentalEndDate.hashCode());
         long temp;
         temp = Double.doubleToLongBits(price);
         result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -262,7 +210,7 @@ public class CarStorage {
     public String toString(){
         return "Storage [id=" + id + ", carType=" + carType + ", carBrand=" + carBrand + ", licensePlate=" + licensePlate +
                 ", carLocation=" + carLocation + ", carModel=" + carModel + ", carColor=" + carColor + ", carInsurance=" + carInsurance +
-                "carStatus=" + carStatus + "milege=" + milege + "rentalStatDate=" + rentalStartDate + "rentalEndDate=" + rentalEndDate + "]";
+                "carStatus=" + carStatus + "milege=" + milege + "]";
     }
 }
 
