@@ -14,7 +14,7 @@ public class LoadDatabase {
     CommandLineRunner intiDatabase(WarehouseRepository repository){
         return args -> {
             log.info("Loading "+repository.save(new CarStorage("Sedan", "Toyota", "AB1000", "1st Floor", "Camry", "White", true, "Customer not showup", "15000KM", 50)));
-            log.info("Loading "+repository.save(new CarStorage("Suv", "Toyota", "XX888", "2st floor", "Corolla Cross", "Grey", true, "Broken", "5000km", 60)));
+            log.info("Loading "+repository.save(new CarStorage("Suv", "Toyota", "XX8888", "2st floor", "Corolla Cross", "Grey", true, "Broken", "5000km", 60)));
             log.info("Loading"+repository.save(new CarStorage("Suv", "Porsche", "PS1234", "3rd Floor", "Cayenne", "White", true, "not Rental", "1000km", 100)));
             log.info("Loading"+repository.save(new CarStorage("Sedan", "BMW", "KS9099", "3rd Floor", "M340i", "Black", true, "not Rental", "4700km", 80)));
             log.info("Loading"+repository.save(new CarStorage("Sedan", "BMW", "AATEST", "3rd Floor", "M340i", "Black", true, "not Rental", "4700km", 80)));

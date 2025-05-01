@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -26,7 +26,7 @@ public class OrderCarController {
         this.storefrontUrl = storefrontUrl;
     }
 
-    @PostMapping("/ordercar/{licensePlate}")
+    @PutMapping("/ordercar/{licensePlate}")
     public ResponseEntity<String> handleOrder(@PathVariable String licensePlate) {
         Optional<CarStorage> orderByLicense = repository.findByLicensePlate(licensePlate);
 
@@ -37,13 +37,26 @@ public class OrderCarController {
         CarStorage car = orderByLicense.get();
         String url = "http://localhost:8080/order/edit/" + licensePlate;
 
-
-        //เช็คว่ารถเสียแล้วถ้าเสียส่งกลับ
         Map<String, String> request = new HashMap<>();
+
+        // ตรวจสอบสถานะของรถ
+        if ("Broken".equals(car.getCarStatus())) {
+            // หากรถเสีย ส่ง remark กลับไปยัง 8080
+            request.put("remark", "Car is broken, customer rejected");
+            restTemplate.put(url, request);
+            return ResponseEntity.ok("Car is broken and sent back to storefront with remark.");
+        } else if ("not Rental".equals(car.getCarStatus())) {
+            // หากรถพร้อมจอง อัปเดตสถานะใน warehouse เป็น "จองแล้ว"
+            car.setCarStatus("Rental");
+            repository.save(car); // บันทึกสถานะใหม่ในฐานข้อมูล
+            request.put("carStatus", car.getCarStatus());
+            restTemplate.put(url, request);
+            return ResponseEntity.ok("Car is ready and status updated to 'Booked'.");
+        }
+
+        // กรณีสถานะอื่น ๆ
         request.put("carStatus", car.getCarStatus());
-
         restTemplate.put(url, request);
-
         return ResponseEntity.ok("Car sent to storefront " + car.getLicensePlate() + " Status: " + car.getCarStatus());
     }
 
