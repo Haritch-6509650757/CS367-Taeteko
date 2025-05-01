@@ -6,21 +6,46 @@
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: #f0f8ff;
-            color: #003366;
-            padding: 20px;
+            background: #ffffff;
+            color: #333;
+            padding: 0;
+            margin: 0;
         }
 
-        .header-container {
-            text-align: center;
+        .toolbar {
+            background: linear-gradient(to right, #004080, #007BFF);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
             margin-bottom: 30px;
+        }
+
+        .toolbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .toolbar a:hover {
+            background-color: #0056b3;
+            color: #e6f0ff;
         }
 
         h1 {
             color: #004080;
             font-size: 36px;
             font-weight: bold;
+            text-align: center;
             margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         .button-group {
@@ -30,18 +55,19 @@
         }
 
         button {
-            background-color: #007BFF;
+            background: linear-gradient(to right, #007BFF, #0056b3);
             color: white;
             border: none;
             padding: 10px 20px;
             font-size: 16px;
             border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: transform 0.2s ease, background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #003d80;
+            transform: scale(1.05);
         }
 
         #carList {
@@ -52,16 +78,23 @@
         }
 
         .car-item {
-            background-color: #e6f0ff;
+            background: white;
             border: 2px solid #99ccff;
             border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 64, 128, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 64, 128, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        .car-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 64, 128, 0.3);
         }
 
         .car-item h2 {
             color: #003366;
             margin-top: 0;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
         .car-details p {
@@ -75,6 +108,11 @@
     </style>
 </head>
 <body>
+    <div class="toolbar">
+        <a href="index.html">หน้าเริ่มต้น</a>
+        <a href="available-cars.html">รถที่พร้อมใช้งาน</a>
+    </div>
+
     <div class="header-container">
         <h1>ค้นหารถที่มีอยู่</h1>
         <div class="button-group">
@@ -82,7 +120,6 @@
             <button onclick="clearCarList()">ล้างการค้นหา</button>
         </div>
     </div>
-
     <div id="carList"></div>
 
     <script>

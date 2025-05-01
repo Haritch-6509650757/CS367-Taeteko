@@ -6,24 +6,85 @@
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: #fff8f0;
+            background: #ffffff;
             color: #333;
-            padding: 30px;
-            max-width: 600px;
-            margin: auto;
+            padding: 0;
+            margin: 0;
         }
+
+        .toolbar {
+            background: linear-gradient(to right, #004080, #007BFF);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .toolbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .toolbar a:hover {
+            background-color: #0056b3;
+            color: #e6f0ff;
+        }
+
         h1 {
-            color: #b35c00;
+            color: #004080;
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
         }
+
+        p {
+            text-align: center;
+            font-size: 18px;
+            color: #555;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
         label {
             display: block;
             margin-top: 10px;
+            font-weight: bold;
+            color: #004080;
         }
+
         input, textarea {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
         }
+
+        input[readonly] {
+            background-color: #f0f0f0;
+            color: #666;
+            cursor: not-allowed;
+        }
+
         button {
             margin-top: 20px;
             background-color: #28a745;
@@ -33,11 +94,24 @@
             font-size: 16px;
             border-radius: 6px;
             cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
+    <div class="toolbar">
+        <a href="index.html">หน้าเริ่มต้น</a>
+        <a href="available-cars.html">รถที่พร้อมใช้งาน</a>
+    </div>
+
     <h1>สั่งจองรถ</h1>
+    <p>กรุณาเลือกข้อมูลรถที่ต้องการจอง</p>
+
     <form id="orderForm">
         <label>ทะเบียนรถ</label>
         <input type="text" id="carPlateNumber" name="carPlateNumber" readonly>
@@ -46,7 +120,7 @@
         <input type="text" name="customerName" required>
 
         <label>รหัสสาขา</label>
-        <input type="text" name="storeId" required>
+        <input type="text" name="storeId" value="rental168" readonly>
 
         <label>หมายเหตุ</label>
         <textarea name="remarks"></textarea>
@@ -61,11 +135,9 @@
     </form>
 
     <script>
-        // ดึงค่าจาก URL
         const params = new URLSearchParams(window.location.search);
         document.getElementById('carPlateNumber').value = params.get('plate') || '';
 
-        // จัดการ submit form
         document.getElementById('orderForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -84,7 +156,7 @@
             .then(res => res.text())
             .then(result => {
                 alert('สั่งจองสำเร็จ: ' + result);
-                window.location.href = 'index.html'; // กลับหน้าแรก
+                window.location.href = 'index.html';
             })
             .catch(err => {
                 console.error(err);
