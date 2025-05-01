@@ -12,7 +12,8 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/external")
-public class ExternalController{
+public class ExternalController {
+
     private final RestTemplate restTemplate;
     private final String urlWarehouse = "http://localhost:9090";
 
@@ -21,7 +22,7 @@ public class ExternalController{
     }
 
     @GetMapping("/searchcar/available")
-    public List<?> fetchCarWareHouse(){
+    public List<?> fetchCarWareHouse() {
         String url = urlWarehouse + "/warehouse/carlists";
         List<?> result = restTemplate.getForObject(url, List.class);
         return result;
