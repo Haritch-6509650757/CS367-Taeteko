@@ -21,7 +21,7 @@ public class CarlistsController {
     }
 
     @GetMapping("/carlists")
-    List<CarStorage> findAll() {
-        return repository.findAll();
+    public List<CarStorage> listAllCars(){
+        return repository.findByCarStatus("not Rental");
     }
 }
