@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>รถที่พร้อมใช้งาน</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f0f8ff;
+            color: #003366;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #004080;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #carList {
+            margin-top: 30px;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .car-item {
+            background-color: #e6f0ff;
+            border: 2px solid #99ccff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 64, 128, 0.1);
+        }
+
+        .car-item h2 {
+            color: #003366;
+            margin-top: 0;
+        }
+
+        .car-details p {
+            margin: 5px 0;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #004080;
+        }
+    </style>
+</head>
+<body>
+    <h1>ค้นหารถที่มีอยู่</h1>
+    <button onclick="fetchAvailableCars()">ค้นหารถ</button>
+    <div id="carList"></div>
+
+    <script>
+        function fetchAvailableCars() {
+            fetch('http://localhost:8080/external/searchcar/available')
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.json();
+                })
+                .then(data => {
+                    const carListDiv = document.getElementById('carList');
+                    carListDiv.innerHTML = '';
+                    if (data.length === 0) {
+                        carListDiv.innerHTML = '<p>ไม่พบรถที่พร้อมใช้งาน</p>';
+                    } else {
+                        data.forEach(car => {
+                            const carDiv = document.createElement('div');
+                            carDiv.className = 'car-item';
+                            carDiv.innerHTML = `
+                                <h2>${car.carBrand} ${car.carModel}</h2>
+                                <div class="car-details">
+                                    <p><span class="label">ประเภท:</span> ${car.carType}</p>
+                                    <p><span class="label">สี:</span> ${car.carColor}</p>
+                                    <p><span class="label">ทะเบียน:</span> ${car.licensePlate}</p>
+                                    <p><span class="label">ตำแหน่ง:</span> ${car.carLocation}</p>
+                                    <p><span class="label">ประกัน:</span> ${car.carInsurance ? 'มี' : 'ไม่มี'}</p>
+                                    <p><span class="label">สถานะ:</span> ${car.carStatus}</p>
+                                    <p><span class="label">เลขไมล์:</span> ${car.milege}</p>
+                                    <p><span class="label">ราคา/วัน:</span> $${car.price}</p>
+                                </div>
+                            `;
+                            carListDiv.appendChild(carDiv);
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('เกิดข้อผิดพลาด:', error);
+                    document.getElementById('carList').innerHTML = '<p>เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+                });
+        }
+    </script>
+</body>
+</html>

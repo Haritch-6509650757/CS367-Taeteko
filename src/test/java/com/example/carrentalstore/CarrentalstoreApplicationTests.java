@@ -1,10 +1,10 @@
-package dev.haritch.carrental;
+package com.example.carrentalstore;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CarrentalApplicationTests {
+class CarrentalstoreApplicationTests {
 
 	@Test
 	void contextLoads() {
