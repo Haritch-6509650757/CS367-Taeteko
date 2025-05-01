@@ -39,24 +39,20 @@ public class OrderCarController {
 
         Map<String, String> request = new HashMap<>();
 
-        // ตรวจสอบสถานะของรถ
-        if ("Broken".equals(car.getCarStatus())) {
-            // หากรถเสีย ส่ง remark กลับไปยัง 8080
-            request.put("remark", "Car is broken, customer rejected");
+        //ยังทำไม่เสร็จๆ ตรงรถพังทดสอบแล้วไม่ผ่าน
+        if ("Broken".equals(car.getRemark())) {
+            request.put("remark", "Car is broken");
+            request.put("carStatus", "Rejected");
             restTemplate.put(url, request);
             return ResponseEntity.ok("Car is broken and sent back to storefront with remark.");
         } else if ("not Rental".equals(car.getCarStatus())) {
-            // หากรถพร้อมจอง อัปเดตสถานะใน warehouse เป็น "จองแล้ว"
             car.setCarStatus("Rental");
-            repository.save(car); // บันทึกสถานะใหม่ในฐานข้อมูล
-            request.put("carStatus", car.getCarStatus());
-            restTemplate.put(url, request);
+            repository.save(car);
+            // request.put("carStatus", car.getCarStatus());
+            // restTemplate.put(url, request);
             return ResponseEntity.ok("Car is ready and status updated to 'Booked'.");
         }
-
-        // กรณีสถานะอื่น ๆ
-        request.put("carStatus", car.getCarStatus());
-        restTemplate.put(url, request);
+        restTemplate.put(url, null);
         return ResponseEntity.ok("Car sent to storefront " + car.getLicensePlate() + " Status: " + car.getCarStatus());
     }
 

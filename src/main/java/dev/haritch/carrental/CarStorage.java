@@ -1,13 +1,17 @@
 package dev.haritch.carrental;
 
+import java.util.Objects;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
 public class CarStorage {
+
     private @Id
-    @GeneratedValue Long id;
+    @GeneratedValue
+    Long id;
     private String carType;
     private String carBrand;
     private String licensePlate;
@@ -19,11 +23,13 @@ public class CarStorage {
     private String milege;
     private double price;
     private String img;
+    private String remark;
 
-    CarStorage() {}
+    CarStorage() {
+    }
 
-    public CarStorage(String carType, String carBrand, String licensePlate, String carLocation, String carModel, 
-                    String carColor, boolean carInsurance, String carStatus, String milege, double price, String img){
+    public CarStorage(String carType, String carBrand, String licensePlate, String carLocation, String carModel,
+            String carColor, boolean carInsurance, String carStatus, String milege, double price, String img, String remark) {
         this.carType = carType;
         this.carBrand = carBrand;
         this.licensePlate = licensePlate;
@@ -35,6 +41,7 @@ public class CarStorage {
         this.milege = milege;
         this.price = price;
         this.img = img;
+        this.remark = remark;
     }
 
     public String getCarType() {
@@ -117,115 +124,119 @@ public class CarStorage {
         this.price = price;
     }
 
-    public Long getId(){
+    public Long getId() {
         return id;
     }
 
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getImg(){
+    public String getImg() {
         return img;
     }
 
-    public void setImg(String img){
+    public void setImg(String img) {
         this.img = img;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        CarStorage other = (CarStorage) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        if (carType == null) {
-            if (other.carType != null)
-                return false;
-        } else if (!carType.equals(other.carType))
-            return false;
-        if (carBrand == null) {
-            if (other.carBrand != null)
-                return false;
-        } else if (!carBrand.equals(other.carBrand))
-            return false;
-        if (licensePlate == null) {
-            if (other.licensePlate != null)
-                return false;
-        } else if (!licensePlate.equals(other.licensePlate))
-            return false;
-        if (carLocation == null) {
-            if (other.carLocation != null)
-                return false;
-        } else if (!carLocation.equals(other.carLocation))
-            return false;
-        if (carModel == null) {
-            if (other.carModel != null)
-                return false;
-        } else if (!carModel.equals(other.carModel))
-            return false;
-        if (carColor == null) {
-            if (other.carColor != null)
-                return false;
-        } else if (!carColor.equals(other.carColor))
-            return false;
-        if (carInsurance != other.carInsurance)
-            return false;
-        if (carStatus == null) {
-            if (other.carStatus != null)
-                return false;
-        } else if (!carStatus.equals(other.carStatus))
-            return false;
-        if (milege == null) {
-            if (other.milege != null)
-                return false;
-        } else if (!milege.equals(other.milege))
-            return false;
-        if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
-            return false;
-        if (img == null) {
-            if (other.img != null)
-                return false;
-        } else if (!img.equals(other.img))
-            return false;
-        return true;
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("CarStorage{");
+        sb.append("id=").append(id);
+        sb.append(", carType=").append(carType);
+        sb.append(", carBrand=").append(carBrand);
+        sb.append(", licensePlate=").append(licensePlate);
+        sb.append(", carLocation=").append(carLocation);
+        sb.append(", carModel=").append(carModel);
+        sb.append(", carColor=").append(carColor);
+        sb.append(", carInsurance=").append(carInsurance);
+        sb.append(", carStatus=").append(carStatus);
+        sb.append(", milege=").append(milege);
+        sb.append(", price=").append(price);
+        sb.append(", img=").append(img);
+        sb.append(", remark=").append(remark);
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        result = prime * result + ((carType == null) ? 0 : carType.hashCode());
-        result = prime * result + ((carBrand == null) ? 0 : carBrand.hashCode());
-        result = prime * result + ((licensePlate == null) ? 0 : licensePlate.hashCode());
-        result = prime * result + ((carLocation == null) ? 0 : carLocation.hashCode());
-        result = prime * result + ((carModel == null) ? 0 : carModel.hashCode());
-        result = prime * result + ((carColor == null) ? 0 : carColor.hashCode());
-        result = prime * result + (carInsurance ? 1231 : 1237);
-        result = prime * result + ((carStatus == null) ? 0 : carStatus.hashCode());
-        result = prime * result + ((milege == null) ? 0 : milege.hashCode());
-        long temp;
-        temp = Double.doubleToLongBits(price);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
-        result = prime * result + ((img == null) ? 0 : img.hashCode());
-        return result;
+        int hash = 5;
+        hash = 17 * hash + Objects.hashCode(this.id);
+        hash = 17 * hash + Objects.hashCode(this.carType);
+        hash = 17 * hash + Objects.hashCode(this.carBrand);
+        hash = 17 * hash + Objects.hashCode(this.licensePlate);
+        hash = 17 * hash + Objects.hashCode(this.carLocation);
+        hash = 17 * hash + Objects.hashCode(this.carModel);
+        hash = 17 * hash + Objects.hashCode(this.carColor);
+        hash = 17 * hash + (this.carInsurance ? 1 : 0);
+        hash = 17 * hash + Objects.hashCode(this.carStatus);
+        hash = 17 * hash + Objects.hashCode(this.milege);
+        hash = 17 * hash + (int) (Double.doubleToLongBits(this.price) ^ (Double.doubleToLongBits(this.price) >>> 32));
+        hash = 17 * hash + Objects.hashCode(this.img);
+        hash = 17 * hash + Objects.hashCode(this.remark);
+        return hash;
     }
 
     @Override
-    public String toString(){
-        return "Storage [id=" + id + ", carType=" + carType + ", carBrand=" + carBrand + ", licensePlate=" + licensePlate +
-                ", carLocation=" + carLocation + ", carModel=" + carModel + ", carColor=" + carColor + ", carInsurance=" + carInsurance +
-                "carStatus=" + carStatus + "milege=" + milege + "img=" + img + "]";
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final CarStorage other = (CarStorage) obj;
+        if (this.carInsurance != other.carInsurance) {
+            return false;
+        }
+        if (Double.doubleToLongBits(this.price) != Double.doubleToLongBits(other.price)) {
+            return false;
+        }
+        if (!Objects.equals(this.carType, other.carType)) {
+            return false;
+        }
+        if (!Objects.equals(this.carBrand, other.carBrand)) {
+            return false;
+        }
+        if (!Objects.equals(this.licensePlate, other.licensePlate)) {
+            return false;
+        }
+        if (!Objects.equals(this.carLocation, other.carLocation)) {
+            return false;
+        }
+        if (!Objects.equals(this.carModel, other.carModel)) {
+            return false;
+        }
+        if (!Objects.equals(this.carColor, other.carColor)) {
+            return false;
+        }
+        if (!Objects.equals(this.carStatus, other.carStatus)) {
+            return false;
+        }
+        if (!Objects.equals(this.milege, other.milege)) {
+            return false;
+        }
+        if (!Objects.equals(this.img, other.img)) {
+            return false;
+        }
+        if (!Objects.equals(this.remark, other.remark)) {
+            return false;
+        }
+        return Objects.equals(this.id, other.id);
     }
 
 }
-
