@@ -1,5 +1,7 @@
 package dev.haritch.carrental;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -17,8 +19,8 @@ public class OrderCarController {
     private final WarehouseRepository repository;
     private final RestTemplate restTemplate;
     private final StorefrontUrlConfig storefrontUrl;
-     
-    public OrderCarController(WarehouseRepository repository, RestTemplate restTemplate, StorefrontUrlConfig storefrontUrl){
+
+    public OrderCarController(WarehouseRepository repository, RestTemplate restTemplate, StorefrontUrlConfig storefrontUrl) {
         this.repository = repository; //ใช้เข้าถึงฐานข้อมูล
         this.restTemplate = restTemplate;
         this.storefrontUrl = storefrontUrl;
@@ -28,19 +30,21 @@ public class OrderCarController {
     public ResponseEntity<String> handleOrder(@PathVariable String licensePlate) {
         Optional<CarStorage> orderByLicense = repository.findByLicensePlate(licensePlate);
 
-        //อาจจะทำให้
         if (orderByLicense.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found");
         }
 
         CarStorage car = orderByLicense.get();
-        //String url = storefrontUrl.getOrderCar() + "order/edit/" + licensePlate;
-        String url = "http://localhost:8080/order/edit/"+licensePlate;
-
-        //if รถเสียค่อยอัปเดท
-        restTemplate.put(url, car.getCarStatus());
+        String url = "http://localhost:8080/order/edit/" + licensePlate;
 
 
-        return ResponseEntity.ok("Car sent to storefront" + car.getLicensePlate() + "Status: " + car.getCarStatus());
-    }  
-}    
+        //เช็คว่ารถเสียแล้วถ้าเสียส่งกลับ
+        Map<String, String> request = new HashMap<>();
+        request.put("carStatus", car.getCarStatus());
+
+        restTemplate.put(url, request);
+
+        return ResponseEntity.ok("Car sent to storefront " + car.getLicensePlate() + " Status: " + car.getCarStatus());
+    }
+
+}
