@@ -16,13 +16,13 @@ public class LoadDatabase {
         return args -> {
             
             log.info("Preloading " + orderRepository.save(new OrderStorage(
-                "AB1000", "Booked", "คุณสมชาย", "StoreA", "ต้องการส่งเร็ว", "2024-05-10", "2024-05-15", "2024-05-09"
+                "AB1000", "InProgress", "Somchai", "rental168", "-", "2025-03-13", "2025-03-15", "2025-03-15"
             )));
             log.info("Preloading " + orderRepository.save(new OrderStorage(
-                "ขค2345", "InProgress", "คุณสมหญิง", "StoreB", "โทรแจ้งก่อนส่ง", "2024-05-12", "2024-05-17", "2024-05-11"
+                "PS1234", "InProgress", "Somying", "rental168", "-", "2025-03-16", "2025-03-17", "2025-03-15"
             )));
             log.info("Preloading " + orderRepository.save(new OrderStorage(
-                "PS1234", "Completed", "คุณประสงค์", "StoreC", "", "2024-04-20", "2024-04-25", "2024-04-25"
+                "KS9099", "InProgress", "Prapong", "rental168", "-", "2025-03-20", "2025-03-25", "2025-03-25"
             )));
         };
     }
@@ -32,13 +32,10 @@ public class LoadDatabase {
     CommandLineRunner initCarDatabase(CarRepository carRepository) {
         return args -> {
             log.info("Preloading " + carRepository.save(new CarStorage(
-                "Toyota", "AB1000", true
+                "Mercedes Benz", "XZ1234", true
             )));
             log.info("Preloading " + carRepository.save(new CarStorage(
-                "Honda", "ขค2345", false
-            )));
-            log.info("Preloading " + carRepository.save(new CarStorage(
-                "Nissan", "PS1234", true
+                "Honda", "JX5000", false
             )));
         };
     }

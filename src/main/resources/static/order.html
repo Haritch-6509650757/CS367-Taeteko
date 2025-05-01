@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>สั่งจองรถ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fff8f0;
+            color: #333;
+            padding: 30px;
+            max-width: 600px;
+            margin: auto;
+        }
+        h1 {
+            color: #b35c00;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+        }
+        button {
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>สั่งจองรถ</h1>
+    <form id="orderForm">
+        <label>ทะเบียนรถ</label>
+        <input type="text" id="carPlateNumber" name="carPlateNumber" readonly>
+
+        <label>ชื่อผู้เช่า</label>
+        <input type="text" name="customerName" required>
+
+        <label>รหัสสาขา</label>
+        <input type="text" name="storeId" required>
+
+        <label>หมายเหตุ</label>
+        <textarea name="remarks"></textarea>
+
+        <label>วันที่สั่งจอง</label>
+        <input type="date" name="orderDate" required>
+
+        <label>วันที่ส่งมอบ</label>
+        <input type="date" name="deliveryDate" required>
+
+        <button type="submit">ส่งคำสั่ง</button>
+    </form>
+
+    <script>
+        // ดึงค่าจาก URL
+        const params = new URLSearchParams(window.location.search);
+        document.getElementById('carPlateNumber').value = params.get('plate') || '';
+
+        // จัดการ submit form
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            data.status = 'จองแล้ว';
+            data.lastUpdated = new Date().toISOString();
+
+            fetch('http://localhost:8080/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.text())
+            .then(result => {
+                alert('สั่งจองสำเร็จ: ' + result);
+                window.location.href = 'index.html'; // กลับหน้าแรก
+            })
+            .catch(err => {
+                console.error(err);
+                alert('เกิดข้อผิดพลาดในการส่งคำสั่ง');
+            });
+        });
+    </script>
+</body>
+</html>

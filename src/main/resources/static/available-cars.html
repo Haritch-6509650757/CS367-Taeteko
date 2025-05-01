@@ -11,8 +11,22 @@
             padding: 20px;
         }
 
+        .header-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
         h1 {
             color: #004080;
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
 
         button {
@@ -61,8 +75,14 @@
     </style>
 </head>
 <body>
-    <h1>ค้นหารถที่มีอยู่</h1>
-    <button onclick="fetchAvailableCars()">ค้นหารถ</button>
+    <div class="header-container">
+        <h1>ค้นหารถที่มีอยู่</h1>
+        <div class="button-group">
+            <button onclick="fetchAvailableCars()">ค้นหารถ</button>
+            <button onclick="clearCarList()">ล้างการค้นหา</button>
+        </div>
+    </div>
+
     <div id="carList"></div>
 
     <script>
@@ -92,6 +112,7 @@
                                     <p><span class="label">สถานะ:</span> ${car.carStatus}</p>
                                     <p><span class="label">เลขไมล์:</span> ${car.milege}</p>
                                     <p><span class="label">ราคา/วัน:</span> $${car.price}</p>
+                                    <button onclick="location.href='order.html?plate=${car.licensePlate}'">สั่งจองรถ</button>
                                 </div>
                             `;
                             carListDiv.appendChild(carDiv);
@@ -102,6 +123,10 @@
                     console.error('เกิดข้อผิดพลาด:', error);
                     document.getElementById('carList').innerHTML = '<p>เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
                 });
+        }
+
+        function clearCarList() {
+            document.getElementById('carList').innerHTML = '';
         }
     </script>
 </body>
