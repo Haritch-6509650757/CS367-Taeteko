@@ -18,11 +18,12 @@ public class CarStorage {
     private String carStatus;
     private String milege;
     private double price;
+    private String img;
 
     CarStorage() {}
 
     public CarStorage(String carType, String carBrand, String licensePlate, String carLocation, String carModel, 
-                    String carColor, boolean carInsurance, String carStatus, String milege, double price){
+                    String carColor, boolean carInsurance, String carStatus, String milege, double price, String img){
         this.carType = carType;
         this.carBrand = carBrand;
         this.licensePlate = licensePlate;
@@ -33,6 +34,7 @@ public class CarStorage {
         this.carStatus = carStatus;
         this.milege = milege;
         this.price = price;
+        this.img = img;
     }
 
     public String getCarType() {
@@ -123,6 +125,14 @@ public class CarStorage {
         this.id = id;
     }
 
+    public String getImg(){
+        return img;
+    }
+
+    public void setImg(String img){
+        this.img = img;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -181,6 +191,11 @@ public class CarStorage {
             return false;
         if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
             return false;
+        if (img == null) {
+            if (other.img != null)
+                return false;
+        } else if (!img.equals(other.img))
+            return false;
         return true;
     }
 
@@ -201,6 +216,7 @@ public class CarStorage {
         long temp;
         temp = Double.doubleToLongBits(price);
         result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + ((img == null) ? 0 : img.hashCode());
         return result;
     }
 
@@ -208,7 +224,8 @@ public class CarStorage {
     public String toString(){
         return "Storage [id=" + id + ", carType=" + carType + ", carBrand=" + carBrand + ", licensePlate=" + licensePlate +
                 ", carLocation=" + carLocation + ", carModel=" + carModel + ", carColor=" + carColor + ", carInsurance=" + carInsurance +
-                "carStatus=" + carStatus + "milege=" + milege + "]";
+                "carStatus=" + carStatus + "milege=" + milege + "img=" + img + "]";
     }
+
 }
 
