@@ -146,7 +146,7 @@
             data.status = 'จองแล้ว';
             data.lastUpdated = new Date().toISOString();
 
-            fetch('http://localhost:8080/save', {
+            fetch('/order/save', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

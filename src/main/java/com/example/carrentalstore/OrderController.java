@@ -40,6 +40,8 @@ public class OrderController {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String formattedDate = LocalDateTime.now().format(formatter);
             String status = request.get("carStatus");
+            String remake = request.get("remark");
+            order.setRemarks(remake);
             order.setStatus(status);
             order.setLastUpdated(formattedDate);
             orderRepository.save(order);
