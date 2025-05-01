@@ -2,6 +2,7 @@ package dev.haritch.carrental;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,10 +21,17 @@ public class ReturnCarController {
     }
 
     @GetMapping("/returncar")
-    public String searchCar() {
-        String storefrontSearchUrl = "http://localhost:8080/car/all";
-        String returnCarInfo = restTemplate.getForObject(storefrontSearchUrl, String.class);
-        return "Search completed and storefront responded: " + returnCarInfo;
+    public Object searchCar(@RequestParam(required = false) Long id) {
+        String url;
+        if (id != null) {
+            // ค้นหาตาม ID
+            url = "http://localhost:8080/car/" + id;
+            return restTemplate.getForObject(url, Object.class);
+        } else {
+            // แสดงรถทั้งหมด
+            url = "http://localhost:8080/car/all";
+            return restTemplate.getForObject(url, Object.class);
+        }
     }
     
 }

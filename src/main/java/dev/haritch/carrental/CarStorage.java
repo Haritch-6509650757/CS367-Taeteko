@@ -17,8 +17,6 @@ public class CarStorage {
     private boolean carInsurance;
     private String carStatus;
     private String milege;
-    //private String rentalStartDate;
-    //private String rentalEndDate;
     private double price;
 
     CarStorage() {}

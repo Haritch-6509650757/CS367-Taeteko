@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Return Car</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        /* ตั้งค่าพื้นฐาน */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* ส่วนหัว */
+        h1 {
+            background-color: #004080;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin: 0;
+        }
+
+        /* ปุ่ม */
+        button {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #003060;
+        }
+
+        /* กล่องแสดงผล */
+        #response {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #e6f0ff;
+            border: 1px solid #004080;
+            border-radius: 4px;
+            color: #004080;
+            text-align: center;
+        }
+
+        /* ตาราง */
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #004080;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f4f4f4;
+        }
+
+        tr:hover {
+            background-color: #e6f0ff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Return Car</h1>
+    <button id="fetchCarsButton">Return All Cars</button>
+    <div id="response"></div>
+    <table id="carTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Plate Number</th>
+                <th>Brand</th>
+                <th>Ready to Return</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        const fetchCarsButton = document.getElementById('fetchCarsButton');
+        const responseDiv = document.getElementById('response');
+        const carTable = document.getElementById('carTable');
+        const carTableBody = carTable.querySelector('tbody');
+
+        fetchCarsButton.addEventListener('click', async () => {
+            const url = `/warehouse/returncar`; // ดึงข้อมูลรถทั้งหมด
+            try {
+                const response = await fetch(url);
+                const result = await response.json();
+
+                responseDiv.innerText = ''; // ล้างข้อความเก่า
+                carTableBody.innerHTML = ''; // ล้างข้อมูลในตารางเก่า
+
+                if (!result || result.length === 0) {
+                    responseDiv.innerText = 'No cars found.';
+                    carTable.style.display = 'none';
+                    return;
+                }
+
+                carTable.style.display = 'table'; // แสดงตาราง
+
+                result.forEach(car => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${car.id}</td>
+                        <td>${car.plateNumber}</td>
+                        <td>${car.brand}</td>
+                        <td>${car.readyToReturn ? 'Yes' : 'No'}</td>
+                    `;
+                    carTableBody.appendChild(row);
+                });
+            } catch (error) {
+                responseDiv.innerText = `Error: ${error.message || 'Unable to fetch car data.'}`;
+                carTable.style.display = 'none'; // ซ่อนตารางในกรณีเกิดข้อผิดพลาด
+            }
+        });
+    </script>
+</body>
+</html>
