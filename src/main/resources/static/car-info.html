@@ -5,8 +5,8 @@
     <title>Car Info</title>
     <style>
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #ffffff;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; 
             color: #333;
             padding: 0;
             margin: 0;
@@ -68,27 +68,28 @@
         }
 
         button {
-            margin-top: 20px;
-            background-color: #28a745;
+            background: linear-gradient(to right, #007BFF, #0056b3); 
             color: white;
             border: none;
             padding: 10px 20px;
             font-size: 16px;
             border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+            width: 100%; 
+            margin-top: 20px;
         }
 
         button:hover {
-            background-color: #218838;
-            transform: scale(1.05);
+            background-color: #003d80;
+            transform: scale(1.05); 
         }
 
         .result {
             max-width: 600px;
             margin: 20px auto;
             padding: 20px;
-            background: #f9f9f9;
+            background: #ffffff; 
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             font-size: 18px;
@@ -121,15 +122,36 @@
             try {
                 const response = await fetch(`http://localhost:8080/external/call-info?carPlateNumber=${encodeURIComponent(carPlateNumber)}`);
                 if (response.ok) {
-                    const data = await response.text();
-                    resultDiv.textContent = data;
+                    const data = await response.json();
+
+                    resultDiv.innerHTML = `
+                        <table style="width: 90%; margin: 20px auto; border-collapse: collapse; background-color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
+                            <thead>
+                                <tr style="background-color: #004080; color: white;">
+                                    <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">Field</th>
+                                    <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${Object.entries(data).map(([key, value]) => `
+                                    <tr style="text-align: center;">
+                                        <td style="border: 1px solid #ddd; padding: 10px;">${key}</td>
+                                        <td style="border: 1px solid #ddd; padding: 10px;">${value}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
                 } else if (response.status === 404) {
                     resultDiv.textContent = 'Car not found. Please check the plate number and try again.';
+                    resultDiv.style.color = 'red';
                 } else {
                     resultDiv.textContent = 'An unexpected error occurred. Please try again later.';
+                    resultDiv.style.color = 'red';
                 }
             } catch (error) {
                 resultDiv.textContent = 'Error fetching car information. Please check your internet connection.';
+                resultDiv.style.color = 'red';
             }
         }
     </script>
