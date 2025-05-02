@@ -6,7 +6,6 @@
     <title>Return Car</title>
     <link rel="stylesheet" href="/styles.css">
     <style>
-        /* ตั้งค่าพื้นฐาน */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -15,7 +14,6 @@
             padding: 0;
         }
 
-        /* แถบเครื่องมือ */
         .toolbar {
             background: linear-gradient(to right, #004080, #007BFF);
             color: white;
@@ -43,7 +41,6 @@
             color: #e6f0ff;
         }
 
-        /* ส่วนหัว */
         h1 {
             color: #004080;
             font-size: 36px;
@@ -53,7 +50,6 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
-        /* ปุ่ม */
         .button-group {
             display: flex;
             justify-content: center;
@@ -77,7 +73,6 @@
             transform: scale(1.05);
         }
 
-        /* ตาราง */
         table {
             width: 90%;
             margin: 20px auto;
@@ -107,7 +102,6 @@
             background-color: #e6f0ff;
         }
 
-        /* กล่องข้อความ */
         #response {
             max-width: 90%;
             margin: 20px auto;
@@ -152,13 +146,13 @@
         const carTableBody = carTable.querySelector('tbody');
 
         fetchCarsButton.addEventListener('click', async () => {
-            const url = `/warehouse/returncar`; // ดึงข้อมูลรถทั้งหมด
+            const url = `/warehouse/returncar`; 
             try {
                 const response = await fetch(url);
                 const result = await response.json();
 
-                responseDiv.style.display = 'none'; // ซ่อนข้อความเก่า
-                carTableBody.innerHTML = ''; // ล้างข้อมูลในตารางเก่า
+                responseDiv.style.display = 'none'; 
+                carTableBody.innerHTML = ''; 
 
                 if (!result || result.length === 0) {
                     responseDiv.innerText = 'No cars found.';
@@ -167,7 +161,7 @@
                     return;
                 }
 
-                carTable.style.display = 'table'; // แสดงตาราง
+                carTable.style.display = 'table'; 
 
                 result.forEach(car => {
                     const row = document.createElement('tr');
@@ -182,7 +176,7 @@
             } catch (error) {
                 responseDiv.innerText = `Error: ${error.message || 'Unable to fetch car data.'}`;
                 responseDiv.style.display = 'block';
-                carTable.style.display = 'none'; // ซ่อนตารางในกรณีเกิดข้อผิดพลาด
+                carTable.style.display = 'none';
             }
         });
     </script>
