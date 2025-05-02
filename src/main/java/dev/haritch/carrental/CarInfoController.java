@@ -9,16 +9,18 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/warehouse")
-public class CarInfo {
+public class CarInfoController {
 
     private final RestTemplate restTemplate;
+    private final WarehouseRepository repository;
 
-    public CarInfo(RestTemplate restTemplate) {
+    public CarInfoController(RestTemplate restTemplate, WarehouseRepository repository) {
         this.restTemplate = restTemplate;
+        this.repository = repository;
     }
 
-    @GetMapping("/info")
-    public ResponseEntity<?> getOrderByCarPlate(@RequestParam(required = false) String carPlateNumber) {
+    @GetMapping("/info/storefront")
+    public ResponseEntity<?> getOrderByCarPlateStorefront(@RequestParam(required = false) String carPlateNumber) {
         if (carPlateNumber == null || carPlateNumber.isEmpty()) {
             return ResponseEntity.badRequest().body("Please enter your car plate number.");
         }
@@ -31,5 +33,15 @@ public class CarInfo {
         } catch (Exception e) {
             return ResponseEntity.status(404).body("Car not found: " + carPlateNumber);
         }
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<?> getOrderByCarPlate(@RequestParam(required = false) String carPlateNumber) {
+        if (carPlateNumber == null || carPlateNumber.isEmpty()) {
+            return ResponseEntity.badRequest().body("Please enter your car plate number.");
+        }
+        return repository.findByLicensePlate(carPlateNumber)
+                .map(order -> ResponseEntity.ok(order))
+                .orElseGet(() -> ResponseEntity.status(404).body(null));
     }
 }
