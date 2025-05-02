@@ -22,7 +22,7 @@ public class CarController {
 
     @GetMapping("/all")
     public List<CarStorage> getAllCars() {
-        return carRepository.findByReadyToReturn(true);
+        return carRepository.findAll();
     }
 
     @GetMapping("/{id}")
