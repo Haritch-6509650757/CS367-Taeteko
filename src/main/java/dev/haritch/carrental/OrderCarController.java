@@ -46,7 +46,7 @@ public class OrderCarController {
             restTemplate.put(url, request);
             return ResponseEntity.ok("Car is broken and sent back to storefront with remark.");
         } else if ("not Rental".equals(car.getCarStatus())) {
-            car.setCarStatus("Rental");
+            car.setCarStatus("Inprogress");
             repository.save(car);
             // request.put("carStatus", car.getCarStatus());
             // restTemplate.put(url, request);

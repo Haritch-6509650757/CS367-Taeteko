@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Action</title>
+    <style>
+        /* ตั้งค่าพื้นฐาน */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* แถบเครื่องมือ */
+        .toolbar {
+            background: linear-gradient(to right, #004080, #007BFF);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .toolbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .toolbar a:hover {
+            background-color: #0056b3;
+            color: #e6f0ff;
+        }
+
+        /* ส่วนหัว */
+        h1 {
+            color: #004080;
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ตาราง */
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #004080;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f4f4f4;
+        }
+
+        tr:hover {
+            background-color: #e6f0ff;
+        }
+
+        /* ฟอร์ม */
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #004080;
+        }
+
+        select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background: linear-gradient(to right, #007BFF, #0056b3);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #003d80;
+            transform: scale(1.05);
+        }
+
+        #response {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: #004080;
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <a href="indexwarehouse.html">Home</a>
+        <a href="returncar.html">Return Car</a>
+        <a href="customeraction.html">Customer Action</a>
+    </div>
+
+    <h1>Customer Action</h1>
+    <table id="orderTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>License Plate</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <form id="actionForm" style="display: none;">
+        <label for="carStatus">Select Status:</label>
+        <select id="carStatus" required>
+            <option value="Rejected">Rejected</option>
+        </select>
+
+        <label for="remark">Remark:</label>
+        <textarea id="remark" rows="4" placeholder="Enter remark here..." required></textarea>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+        const orderTable = document.getElementById('orderTable');
+        const orderTableBody = orderTable.querySelector('tbody');
+        const actionForm = document.getElementById('actionForm');
+        const carStatus = document.getElementById('carStatus');
+        const remark = document.getElementById('remark');
+        const responseDiv = document.getElementById('response');
+        let selectedLicensePlate = null;
+
+        // Fetch all orders from CustomerActionController
+        async function fetchOrders() {
+            try {
+                const response = await fetch('/warehouse/orders'); // ดึงข้อมูลจาก CustomerActionController
+                const orders = await response.json();
+
+                orderTableBody.innerHTML = '';
+                if (orders.length === 0) {
+                    responseDiv.innerText = 'No orders found.';
+                    responseDiv.style.color = 'red';
+                    orderTable.style.display = 'none';
+                    return;
+                }
+
+                orderTable.style.display = 'table';
+                orders.forEach(order => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${order.id}</td>
+                        <td>${order.carPlateNumber}</td>
+                        <td>${order.status}</td>
+                        <td><button onclick="selectOrder('${order.carPlateNumber}')">Select</button></td>
+                    `;
+                    orderTableBody.appendChild(row);
+                });
+            } catch (error) {
+                responseDiv.innerText = 'Error fetching orders.';
+                responseDiv.style.color = 'red';
+            }
+        }
+
+        // Select an order and show the form
+        function selectOrder(licensePlate) {
+            selectedLicensePlate = licensePlate;
+            console.log("Selected License Plate:", selectedLicensePlate); // ตรวจสอบค่าที่เลือก
+            actionForm.style.display = 'block';
+            responseDiv.innerText = '';
+        }
+
+        // Submit the form
+        actionForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const status = carStatus.value;
+            const remarkText = remark.value;
+
+            try {
+                console.log("Submitting License Plate:", selectedLicensePlate); // ตรวจสอบค่าที่ส่ง
+                const response = await fetch(`/warehouse/sendcar/${selectedLicensePlate}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        carStatus: status,
+                        remark: remarkText
+                    })
+                });
+
+                const result = await response.text();
+                responseDiv.innerText = result;
+
+                if (response.ok) {
+                    responseDiv.style.color = 'green';
+                    actionForm.style.display = 'none';
+                    fetchOrders(); // Refresh the order list
+                } else {
+                    responseDiv.style.color = 'red';
+                }
+            } catch (error) {
+                responseDiv.innerText = 'Error submitting the form.';
+                responseDiv.style.color = 'red';
+            }
+        });
+
+        // Fetch orders on page load
+        fetchOrders();
+    </script>
+</body>
+</html>
