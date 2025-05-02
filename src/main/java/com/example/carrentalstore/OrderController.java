@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,6 +33,16 @@ public class OrderController {
     public ResponseEntity<List<OrderStorage>> getAllOrders() {
         List<OrderStorage> orders = orderRepository.findAll();
         return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<?> getOrderByCarPlate(@RequestParam(required = false) String carPlateNumber) {
+        if (carPlateNumber == null || carPlateNumber.isEmpty()) {
+            return ResponseEntity.badRequest().body("กรุณาระบุหมายเลขทะเบียนรถ");
+        }
+        return orderRepository.findByCarPlateNumber(carPlateNumber)
+                .map(order -> ResponseEntity.ok(order))
+                .orElseGet(() -> ResponseEntity.status(404).body(null));
     }
 
     @PostMapping("/save")
