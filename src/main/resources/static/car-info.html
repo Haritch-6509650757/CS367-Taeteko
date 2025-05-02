@@ -111,12 +111,13 @@
         <input type="text" id="carPlateNumber" name="carPlateNumber" placeholder="Enter Car Plate Number" required>
         <button type="button" onclick="fetchCarInfo()">Get Info</button>
     </form>
-    <div class="result" id="result"></div>
+    <div class="result" id="result" style="display: none;"></div>
 
     <script>
         async function fetchCarInfo() {
             const carPlateNumber = document.getElementById('carPlateNumber').value;
             const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block'; // แสดงกล่องผลลัพธ์
             resultDiv.textContent = 'Loading...';
 
             try {
@@ -128,30 +129,39 @@
                         <table style="width: 90%; margin: 20px auto; border-collapse: collapse; background-color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
                             <thead>
                                 <tr style="background-color: #004080; color: white;">
-                                    <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">Field</th>
-                                    <th style="border: 1px solid #ddd; padding: 10px; text-align: center;">Value</th>
+                                    <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-size: 16px;">Field</th>
+                                    <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-size: 16px;">Value</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 ${Object.entries(data).map(([key, value]) => `
                                     <tr style="text-align: center;">
-                                        <td style="border: 1px solid #ddd; padding: 10px;">${key}</td>
-                                        <td style="border: 1px solid #ddd; padding: 10px;">${value}</td>
+                                        <td style="border: 1px solid #ddd; padding: 12px; font-size: 14px; color: #333;">${key}</td>
+                                        <td style="border: 1px solid #ddd; padding: 12px; font-size: 14px; color: #555;">${value}</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
                         </table>
                     `;
                 } else if (response.status === 404) {
-                    resultDiv.textContent = 'Car not found. Please check the plate number and try again.';
-                    resultDiv.style.color = 'red';
+                    resultDiv.innerHTML = `
+                        <div style="color: red; font-size: 18px; font-weight: bold; margin-top: 20px;">
+                            Car not found. Please check the plate number and try again.
+                        </div>
+                    `;
                 } else {
-                    resultDiv.textContent = 'An unexpected error occurred. Please try again later.';
-                    resultDiv.style.color = 'red';
+                    resultDiv.innerHTML = `
+                        <div style="color: red; font-size: 18px; font-weight: bold; margin-top: 20px;">
+                            An unexpected error occurred. Please try again later.
+                        </div>
+                    `;
                 }
             } catch (error) {
-                resultDiv.textContent = 'Error fetching car information. Please check your internet connection.';
-                resultDiv.style.color = 'red';
+                resultDiv.innerHTML = `
+                    <div style="color: red; font-size: 18px; font-weight: bold; margin-top: 20px;">
+                        Error fetching car information. Please check your internet connection.
+                    </div>
+                `;
             }
         }
     </script>
