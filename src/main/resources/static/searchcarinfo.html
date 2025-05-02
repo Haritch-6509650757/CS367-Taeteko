@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Return Car</title>
-    <link rel="stylesheet" href="/styles.css">
+    <title>Search Car Info</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -50,11 +49,28 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
-        .button-group {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #004080;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
             margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
 
         button {
@@ -66,11 +82,19 @@
             border-radius: 6px;
             cursor: pointer;
             transition: transform 0.2s ease, background-color 0.3s ease;
+            width: 100%;
         }
 
         button:hover {
             background-color: #003d80;
             transform: scale(1.05);
+        }
+
+        #response {
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            color: #004080;
         }
 
         table {
@@ -101,18 +125,6 @@
         tr:hover {
             background-color: #e6f0ff;
         }
-
-        #response {
-            max-width: 90%;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: #e6f0ff;
-            border: 1px solid #004080;
-            border-radius: 6px;
-            color: #004080;
-            text-align: center;
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -120,64 +132,50 @@
         <a href="indexwarehouse.html">Home</a>
         <a href="returncar.html">Return Car</a>
         <a href="customeraction.html">Customer Action</a>
-        <a href="searchcarinfo.html">Search Car Info</a>
+        <a hrft="searchcarinfo.html">Search Car Info</a>
     </div>
 
-    <h1>Return Car</h1>
-    <div class="button-group">
-        <button id="fetchCarsButton">Return All Cars</button>
-    </div>
+    <h1>Search Car Info</h1>
+    <form id="searchForm">
+        <label for="carPlateNumber">Enter Car Plate Number:</label>
+        <input type="text" id="carPlateNumber" placeholder="e.g., AB1234" required>
+        <button type="submit">Search</button>
+    </form>
+
     <div id="response"></div>
-    <table id="carTable" style="display: none;">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Plate Number</th>
-                <th>Brand</th>
-                <th>Ready to Return</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
 
     <script>
-        const fetchCarsButton = document.getElementById('fetchCarsButton');
+        const searchForm = document.getElementById('searchForm');
         const responseDiv = document.getElementById('response');
-        const carTable = document.getElementById('carTable');
-        const carTableBody = carTable.querySelector('tbody');
 
-        fetchCarsButton.addEventListener('click', async () => {
-            const url = `/warehouse/returncar`; 
+        searchForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const carPlateNumber = document.getElementById('carPlateNumber').value;
+
             try {
-                const response = await fetch(url);
+                const response = await fetch(`/warehouse/info/storefront?carPlateNumber=${carPlateNumber}`);
                 const result = await response.json();
 
-                responseDiv.style.display = 'none'; 
-                carTableBody.innerHTML = ''; 
-
-                if (!result || result.length === 0) {
-                    responseDiv.innerText = 'No cars found.';
-                    responseDiv.style.display = 'block';
-                    carTable.style.display = 'none';
-                    return;
-                }
-
-                carTable.style.display = 'table'; 
-
-                result.forEach(car => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${car.id}</td>
-                        <td>${car.plateNumber}</td>
-                        <td>${car.brand}</td>
-                        <td>${car.readyToReturn ? 'Yes' : 'No'}</td>
+                if (response.ok) {
+                    responseDiv.innerHTML = `
+                        <table>
+                            <tr><th>Field</th><th>Value</th></tr>
+                            ${Object.entries(result).map(([key, value]) => `
+                                <tr>
+                                    <td>${key}</td>
+                                    <td>${value}</td>
+                                </tr>
+                            `).join('')}
+                        </table>
                     `;
-                    carTableBody.appendChild(row);
-                });
+                } else {
+                    responseDiv.innerText = result.message || 'Car not found.';
+                    responseDiv.style.color = 'red';
+                }
             } catch (error) {
-                responseDiv.innerText = `Error: ${error.message || 'Unable to fetch car data.'}`;
-                responseDiv.style.display = 'block';
-                carTable.style.display = 'none';
+                responseDiv.innerText = 'Error fetching car info.';
+                responseDiv.style.color = 'red';
             }
         });
     </script>
