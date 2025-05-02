@@ -29,13 +29,11 @@ public class ExternalController {
     }
 
     @PostMapping("/ordercar")
-    public String orderCar(String licensePlate){
-        String url = urlWarehouse + "/warehouse/ordercar/"+ licensePlate;
-        //String response = restTemplate.postForObject(url, null,String.class);
-        //String text = restTemplate.put(url, null);
+    public ResponseEntity<String> orderCar(String licensePlate) {
+        String url = urlWarehouse + "/warehouse/ordercar/" + licensePlate;
         ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, null, String.class);
-        String text = response.getBody();
-        return "ส่งคำสั่งจัดหารถเรียบร้อย: " + licensePlate + "\n" + text;
+        String text = "ส่งคำสั่งจัดหารถเรียบร้อย: " + licensePlate + "\n" + response.getBody();
+        return ResponseEntity.ok(text);
     }
 
 }

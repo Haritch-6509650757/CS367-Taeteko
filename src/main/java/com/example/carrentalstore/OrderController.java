@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,28 +27,29 @@ public class OrderController {
     }
 
     @PostMapping("/save")
-    public String orderCar(@RequestBody OrderStorage order) {
+    public ResponseEntity<String> orderCar(@RequestBody OrderStorage order) {
         orderRepository.save(order);
-        String text = externalController.orderCar(order.getCarPlateNumber());
-        return "บันทึกลงฐานข้อมูลเรียบร้อย: " + order.toString() + "\n" + text;
+        ResponseEntity<String> text = externalController.orderCar(order.getCarPlateNumber());
+        String response = "บันทึกลงฐานข้อมูลเรียบร้อย: " + order.toString() + "\n" + text;
+        return ResponseEntity.ok(response);
     }
 
-
     @PutMapping("/edit/{carPlateNumber}")
-    public String editOrderByCarPlate(@RequestBody Map<String, String> request, @PathVariable String carPlateNumber) {
+    public ResponseEntity<String> editOrderByCarPlate(@RequestBody Map<String, String> request, @PathVariable String carPlateNumber) {
         return orderRepository.findByCarPlateNumber(carPlateNumber)
-        .map(order -> {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            String formattedDate = LocalDateTime.now().format(formatter);
-            String status = request.get("carStatus");
-            String remake = request.get("remark");
-            order.setRemarks(remake);
-            order.setStatus(status);
-            order.setLastUpdated(formattedDate);
-            orderRepository.save(order);
-            return "แก้ไขสถานะสำเร็จ: " + carPlateNumber;
-        })
-        .orElse("ไม่พบข้อมูล: " + carPlateNumber);
+            .map(order -> {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String formattedDate = LocalDateTime.now().format(formatter);
+                String status = request.get("carStatus");
+                String remark = request.get("remark");
+                order.setRemarks(remark);
+                order.setStatus(status);
+                order.setLastUpdated(formattedDate);
+                orderRepository.save(order);
+                String response = "แก้ไขสถานะสำเร็จ: " + carPlateNumber;
+                return ResponseEntity.ok(response);
+            })
+            .orElse(ResponseEntity.status(404).body("ไม่พบข้อมูล: " + carPlateNumber));
     }
 
 }
