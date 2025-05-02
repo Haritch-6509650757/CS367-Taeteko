@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Info</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #ffffff;
+            color: #333;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toolbar {
+            background: linear-gradient(to right, #004080, #007BFF);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .toolbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .toolbar a:hover {
+            background-color: #0056b3;
+            color: #e6f0ff;
+        }
+
+        h1 {
+            color: #004080;
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+            transform: scale(1.05);
+        }
+
+        .result {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 18px;
+            color: #555;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <a href="index.html">Home</a>
+        <a href="available-cars.html">Available Cars</a>
+        <a href="car-info.html">Car Info</a>
+    </div>
+
+    <h1>Car Information</h1>
+    <form id="carInfoForm">
+        <label for="carPlateNumber" style="font-weight: bold; color: #004080;">Car Plate Number</label>
+        <input type="text" id="carPlateNumber" name="carPlateNumber" placeholder="Enter Car Plate Number" required>
+        <button type="button" onclick="fetchCarInfo()">Get Info</button>
+    </form>
+    <div class="result" id="result"></div>
+
+    <script>
+        async function fetchCarInfo() {
+            const carPlateNumber = document.getElementById('carPlateNumber').value;
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = 'Loading...';
+
+            try {
+                const response = await fetch(`http://localhost:8080/external/call-info?carPlateNumber=${encodeURIComponent(carPlateNumber)}`);
+                if (response.ok) {
+                    const data = await response.text();
+                    resultDiv.textContent = data;
+                } else if (response.status === 404) {
+                    resultDiv.textContent = 'Car not found. Please check the plate number and try again.';
+                } else {
+                    resultDiv.textContent = 'An unexpected error occurred. Please try again later.';
+                }
+            } catch (error) {
+                resultDiv.textContent = 'Error fetching car information. Please check your internet connection.';
+            }
+        }
+    </script>
+</body>
+</html>
