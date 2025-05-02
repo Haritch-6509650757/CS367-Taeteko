@@ -18,7 +18,7 @@ public class CarInfo {
     }
 
     @GetMapping("/info")
-    public ResponseEntity<?> getCarInfoFromStorefront(@RequestParam(required = false) String carPlateNumber) {
+    public ResponseEntity<?> getOrderByCarPlate(@RequestParam(required = false) String carPlateNumber) {
         if (carPlateNumber == null || carPlateNumber.isEmpty()) {
             return ResponseEntity.badRequest().body("Please enter your car plate number.");
         }
