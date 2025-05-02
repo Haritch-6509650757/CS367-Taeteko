@@ -31,7 +31,8 @@ public class CarInfoController {
             ResponseEntity<?> response = restTemplate.getForEntity(url, Object.class);
             return ResponseEntity.ok(response.getBody());
         } catch (Exception e) {
-            System.err.println("Error fetching car info: " + e.getMessage());
+            //System.err.println("Error fetching car info: " + e.getMessage());
+            System.err.println("Car not found. Please check the plate number and try again." + e.getMessage());
             return ResponseEntity.status(404).body("Car not found: " + carPlateNumber);
         }
     }

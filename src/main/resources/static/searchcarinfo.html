@@ -157,6 +157,8 @@
                 const response = await fetch(`/warehouse/info/storefront?carPlateNumber=${carPlateNumber}`);
                 const result = await response.json();
 
+                responseDiv.style.color = 'black';
+
                 if (response.ok) {
                     responseDiv.innerHTML = `
                         <table>
@@ -174,7 +176,7 @@
                     responseDiv.style.color = 'red';
                 }
             } catch (error) {
-                responseDiv.innerText = 'Error fetching car info.';
+                responseDiv.innerText = 'Car not found. Please check the plate number and try again.';
                 responseDiv.style.color = 'red';
             }
         });

@@ -57,7 +57,9 @@ public class CustomerActionController {
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(body, headers);
         try {
             restTemplate.put(url, requestEntity);
-            return ResponseEntity.ok("แก้ไขสถานะสำเร็จ: " + licensePlate);
+            targetCar.setCarStatus("not Rental");
+            repository.save(targetCar);
+            return ResponseEntity.ok("Status edited successfully: " + licensePlate);
         } catch (Exception e) {
             System.err.println("Error sending car " + targetCar.getLicensePlate() + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error sending car: " + e.getMessage());
