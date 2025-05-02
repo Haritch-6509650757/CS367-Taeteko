@@ -38,7 +38,7 @@ public class OrderController {
     @GetMapping("/info")
     public ResponseEntity<?> getOrderByCarPlate(@RequestParam(required = false) String carPlateNumber) {
         if (carPlateNumber == null || carPlateNumber.isEmpty()) {
-            return ResponseEntity.badRequest().body("กรุณาระบุหมายเลขทะเบียนรถ");
+            return ResponseEntity.badRequest().body("Please enter your car plate number.");
         }
         return orderRepository.findByCarPlateNumber(carPlateNumber)
                 .map(order -> ResponseEntity.ok(order))
@@ -49,7 +49,7 @@ public class OrderController {
     public ResponseEntity<String> orderCar(@RequestBody OrderStorage order) {
         orderRepository.save(order);
         ResponseEntity<String> text = externalController.orderCar(order.getCarPlateNumber());
-        String response = "บันทึกลงฐานข้อมูลเรียบร้อย: " + order.toString() + "\n" + text;
+        String response = "Successfully saved to the database: " + order.toString() + "\n" + text;
         return ResponseEntity.ok(response);
     }
 
@@ -65,10 +65,10 @@ public class OrderController {
                     order.setStatus(status);
                     order.setLastUpdated(formattedDate);
                     orderRepository.save(order);
-                    String response = "แก้ไขสถานะสำเร็จ: " + carPlateNumber;
+                    String response = "Status updated successfully: " + carPlateNumber;
                     return ResponseEntity.ok(response);
                 })
-                .orElse(ResponseEntity.status(404).body("ไม่พบข้อมูล: " + carPlateNumber));
+                .orElse(ResponseEntity.status(404).body("No data found: " + carPlateNumber));
     }
 
 }

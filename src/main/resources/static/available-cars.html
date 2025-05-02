@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>รถที่พร้อมใช้งาน</title>
+    <title>Available Cars</title>
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
@@ -109,15 +109,15 @@
 </head>
 <body>
     <div class="toolbar">
-        <a href="index.html">หน้าเริ่มต้น</a>
-        <a href="available-cars.html">รถที่พร้อมใช้งาน</a>
+        <a href="index.html">Home</a>
+        <a href="available-cars.html">Available Cars</a>
     </div>
 
     <div class="header-container">
-        <h1>ค้นหารถที่มีอยู่</h1>
+        <h1>Search Available Cars</h1>
         <div class="button-group">
-            <button onclick="fetchAvailableCars()">ค้นหารถ</button>
-            <button onclick="clearCarList()">ล้างการค้นหา</button>
+            <button onclick="fetchAvailableCars()">Search Cars</button>
+            <button onclick="clearCarList()">Clear Search</button>
         </div>
     </div>
     <div id="carList"></div>
@@ -133,7 +133,7 @@
                     const carListDiv = document.getElementById('carList');
                     carListDiv.innerHTML = '';
                     if (data.length === 0) {
-                        carListDiv.innerHTML = '<p>ไม่พบรถที่พร้อมใช้งาน</p>';
+                        carListDiv.innerHTML = '<p>No available cars found</p>';
                     } else {
                         data.forEach(car => {
                             const carDiv = document.createElement('div');
@@ -141,16 +141,16 @@
                             carDiv.innerHTML = `
                                 <h2>${car.carBrand} ${car.carModel}</h2>
                                 <div class="car-details">
-                                    <img src=${car.img} alt="รูปภาพรถ" style="width:100%; border-radius: 10px; margin-bottom: 10px;">
-                                    <p><span class="label">ประเภท:</span> ${car.carType}</p>
-                                    <p><span class="label">สี:</span> ${car.carColor}</p>
-                                    <p><span class="label">ทะเบียน:</span> ${car.licensePlate}</p>
-                                    <p><span class="label">ตำแหน่ง:</span> ${car.carLocation}</p>
-                                    <p><span class="label">ประกัน:</span> ${car.carInsurance ? 'มี' : 'ไม่มี'}</p>
-                                    <p><span class="label">สถานะ:</span> ${car.carStatus}</p>
-                                    <p><span class="label">เลขไมล์:</span> ${car.milege}</p>
-                                    <p><span class="label">ราคา/วัน:</span> $${car.price}</p>
-                                    <button onclick="location.href='order.html?plate=${car.licensePlate}'">สั่งจองรถ</button>
+                                    <img src=${car.img} alt="Car Image" style="width:100%; border-radius: 10px; margin-bottom: 10px;">
+                                    <p><span class="label">Type:</span> ${car.carType}</p>
+                                    <p><span class="label">Color:</span> ${car.carColor}</p>
+                                    <p><span class="label">License Plate:</span> ${car.licensePlate}</p>
+                                    <p><span class="label">Location:</span> ${car.carLocation}</p>
+                                    <p><span class="label">Insurance:</span> ${car.carInsurance ? 'Yes' : 'No'}</p>
+                                    <p><span class="label">Status:</span> ${car.carStatus}</p>
+                                    <p><span class="label">Mileage:</span> ${car.milege}</p>
+                                    <p><span class="label">Price/Day:</span> $${car.price}</p>
+                                    <button onclick="location.href='order.html?plate=${car.licensePlate}'">Order Car</button>
                                 </div>
                             `;
                             carListDiv.appendChild(carDiv);
@@ -158,8 +158,8 @@
                     }
                 })
                 .catch(error => {
-                    console.error('เกิดข้อผิดพลาด:', error);
-                    document.getElementById('carList').innerHTML = '<p>เกิดข้อผิดพลาดในการโหลดข้อมูล</p>';
+                    console.error('Error occurred:', error);
+                    document.getElementById('carList').innerHTML = '<p>Error loading data</p>';
                 });
         }
 
