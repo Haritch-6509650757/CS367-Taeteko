@@ -129,15 +129,15 @@
                         <table style="width: 90%; margin: 20px auto; border-collapse: collapse; background-color: white; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 8px; overflow: hidden;">
                             <thead>
                                 <tr style="background-color: #004080; color: white;">
-                                    <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-size: 16px;">Field</th>
-                                    <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-size: 16px;">Value</th>
+                                    <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-size: 16px; font-weight: bold;">Field</th>
+                                    <th style="border: 1px solid #ddd; padding: 12px; text-align: center; font-size: 16px; font-weight: bold;">Value</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 ${Object.entries(data).map(([key, value]) => `
                                     <tr style="text-align: center;">
-                                        <td style="border: 1px solid #ddd; padding: 12px; font-size: 14px; color: #333;">${key}</td>
-                                        <td style="border: 1px solid #ddd; padding: 12px; font-size: 14px; color: #555;">${value}</td>
+                                        <td style="border: 1px solid #ddd; padding: 12px; font-size: 14px; color: #333; font-weight: bold;">${key}</td>
+                                        <td style="border: 1px solid #ddd; padding: 12px; font-size: 14px; color: #555; font-weight: bold;">${value}</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
