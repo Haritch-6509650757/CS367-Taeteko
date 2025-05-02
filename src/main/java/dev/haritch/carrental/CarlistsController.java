@@ -12,12 +12,10 @@ import org.springframework.web.client.RestTemplate;
 public class CarlistsController {
     private final WarehouseRepository repository;
     private final RestTemplate restTemplate;
-    private final StorefrontUrlConfig storefrontUrl;
      
-    public CarlistsController(WarehouseRepository repository, RestTemplate restTemplate, StorefrontUrlConfig storefrontUrl){
+    public CarlistsController(WarehouseRepository repository, RestTemplate restTemplate){
         this.repository = repository; //ใช้เข้าถึงฐานข้อมูล
         this.restTemplate = restTemplate;
-        this.storefrontUrl = storefrontUrl;
     }
 
     @GetMapping("/carlists")

@@ -18,12 +18,10 @@ public class OrderCarController {
 
     private final WarehouseRepository repository;
     private final RestTemplate restTemplate;
-    private final StorefrontUrlConfig storefrontUrl;
 
-    public OrderCarController(WarehouseRepository repository, RestTemplate restTemplate, StorefrontUrlConfig storefrontUrl) {
-        this.repository = repository; //ใช้เข้าถึงฐานข้อมูล
+    public OrderCarController(WarehouseRepository repository, RestTemplate restTemplate) {
+        this.repository = repository; 
         this.restTemplate = restTemplate;
-        this.storefrontUrl = storefrontUrl;
     }
 
     @PutMapping("/ordercar/{licensePlate}")
@@ -39,7 +37,6 @@ public class OrderCarController {
 
         Map<String, String> request = new HashMap<>();
 
-        //ยังทำไม่เสร็จๆ ตรงรถพังทดสอบแล้วไม่ผ่าน
         if ("Broken".equals(car.getRemark())) {
             request.put("remark", "Car is broken");
             request.put("carStatus", "Rejected");
@@ -48,8 +45,6 @@ public class OrderCarController {
         } else if ("not Rental".equals(car.getCarStatus())) {
             car.setCarStatus("Inprogress");
             repository.save(car);
-            // request.put("carStatus", car.getCarStatus());
-            // restTemplate.put(url, request);
             return ResponseEntity.ok("Car is ready and status updated to 'Booked'.");
         }
         restTemplate.put(url, null);

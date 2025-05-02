@@ -24,12 +24,10 @@ public class CustomerActionController {
 
     private final WarehouseRepository repository;
     private final RestTemplate restTemplate;
-    private final StorefrontUrlConfig storefrontUrl;
 
-    public CustomerActionController(WarehouseRepository repository, RestTemplate restTemplate, StorefrontUrlConfig storefrontUrl) {
-        this.repository = repository; //ใช้เข้าถึงฐานข้อมูล
-        this.restTemplate = restTemplate;
-        this.storefrontUrl = storefrontUrl;
+    public CustomerActionController(WarehouseRepository repository, RestTemplate restTemplatel) {
+        this.repository = repository; 
+        this.restTemplate = restTemplatel;
     }
 
     @PutMapping("/sendcar/{licensePlate}")
@@ -50,8 +48,8 @@ public class CustomerActionController {
         Map<String, Object> body = new HashMap<>();
         body.put("licensePlate", targetCar.getLicensePlate());
         body.put("carType", targetCar.getCarType());
-        body.put("carStatus", request.get("carStatus")); // ใช้ค่าจาก request
-        body.put("remark", request.get("remark"));       // ใช้ค่าจาก request
+        body.put("carStatus", request.get("carStatus")); 
+        body.put("remark", request.get("remark"));       
         body.put("carBrand", targetCar.getCarBrand());
 
         String url = "http://localhost:8080/order/edit/" + targetCar.getLicensePlate();

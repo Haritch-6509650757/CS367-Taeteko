@@ -12,12 +12,10 @@ public class ReturnCarController {
 
     private final WarehouseRepository repository;
     private final RestTemplate restTemplate;
-    private final StorefrontUrlConfig storefrontUrl;
      
-    public ReturnCarController(WarehouseRepository repository, RestTemplate restTemplate, StorefrontUrlConfig storefrontUrl){
+    public ReturnCarController(WarehouseRepository repository, RestTemplate restTemplate){
         this.repository = repository; //ใช้เข้าถึงฐานข้อมูล
         this.restTemplate = restTemplate;
-        this.storefrontUrl = storefrontUrl;
     }
 
     @GetMapping("/returncar")
