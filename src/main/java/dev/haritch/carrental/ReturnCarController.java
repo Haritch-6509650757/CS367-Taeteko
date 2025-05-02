@@ -22,11 +22,9 @@ public class ReturnCarController {
     public Object searchCar(@RequestParam(required = false) Long id) {
         String url;
         if (id != null) {
-            // ค้นหาตาม ID
             url = "http://localhost:8080/car/" + id;
             return restTemplate.getForObject(url, Object.class);
         } else {
-            // แสดงรถทั้งหมด
             url = "http://localhost:8080/car/all";
             return restTemplate.getForObject(url, Object.class);
         }

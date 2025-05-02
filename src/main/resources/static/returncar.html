@@ -175,7 +175,7 @@
                     carTableBody.appendChild(row);
                 });
             } catch (error) {
-                responseDiv.innerText = `Error: ${error.message || 'Unable to fetch car data.'}`;
+                responseDiv.innerText = 'Car not found. Please check the plate number and try again.';
                 responseDiv.style.display = 'block';
                 carTable.style.display = 'none';
             }
