@@ -1,0 +1,45 @@
+### localhost:8080
+### Get all cars
+GET http://localhost:8080/car/all
+
+### Get car by ID
+GET http://localhost:8080/car/1
+
+### Get all orders
+GET http://localhost:8080/order/all
+
+### Get order by car plate
+GET http://localhost:8080/order/info?carPlateNumber=AB1000
+
+### localhost:8080, localhost:9090
+### Save new order
+POST http://localhost:8080/order/save
+Content-Type: application/json
+
+{
+  "carPlateNumber": "QA4102",
+  "status": "InProgress",
+  "customerName": "Somsak",
+  "username": "rental168",
+  "remarks": "-",
+  "startDate": "2025-04-01",
+  "endDate": "2025-04-05",
+  "lastUpdated": "2025-04-01"
+}
+
+### Edit order status and remarks by car plate
+PUT http://localhost:8080/order/edit/QA4102
+Content-Type: application/json
+
+{
+  "carStatus": "Reject",
+  "remark": "Broken"
+}
+
+### localhost:9090
+### Get available cars from warehouse
+GET http://localhost:8080/external/searchcar/available
+
+### Get car info from warehouse
+GET http://localhost:8080/external/call-info?carPlateNumber=XX8888
+
