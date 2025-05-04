@@ -1,0 +1,43 @@
+### Test CustomerActionController - Send Car Status
+PUT http://localhost:9090/warehouse/sendcar/KS9099
+Content-Type: application/json
+
+{
+  "carStatus": "Rejected",
+  "remark": "Car is not in good condition"
+}
+
+###
+
+### Test CustomerActionController - Get All Orders
+GET http://localhost:9090/warehouse/orders
+
+###
+
+### Test CarInfoController - Get Car Info from Storefront
+GET http://localhost:9090/warehouse/info/storefront?carPlateNumber=KS9099
+
+###
+
+### Test CarInfoController - Get Car Info from Warehouse
+GET http://localhost:9090/warehouse/info?carPlateNumber=NS2211
+
+###
+
+### Test ReturnCarController - Search Car by ID
+GET http://localhost:9090/warehouse/returncar?id=1
+
+###
+
+### Test ReturnCarController - Get All Cars
+GET http://localhost:9090/warehouse/returncar
+
+###
+
+### Test OrderCarController - Handle Order
+PUT http://localhost:9090/warehouse/ordercar/KS9099
+
+###
+
+### Test CarlistsController - List All Cars with Status "not Rental"
+GET http://localhost:9090/warehouse/carlists
