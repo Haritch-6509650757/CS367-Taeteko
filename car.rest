@@ -28,7 +28,7 @@ Content-Type: application/json
 }
 
 ### Edit order status and remarks by car plate
-PUT http://localhost:8080/order/edit/QA4102
+PUT http://localhost:8080/order/edit/PS1234
 Content-Type: application/json
 
 {
